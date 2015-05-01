@@ -4,36 +4,51 @@ omega= 60*(pi/180); % angular velocity % UNITS?
 
 % MATERIAL
 E= 160e9; % youngs modulus of poly-silicon
-
+density = 2329; %kg/m3
 
 % GEOMETRY
 % spring geometry 
-% % t_b1= ; % beam 1 thickness
-% % t_b2= ; % beam 2 thickness
-% % w_b1= ; % beam 1 width
-% % w_b2= ; % beam 2 width
-% % l_b1= ; % beam 1 length 
-% % l_b2= ; % beam 2 length
+t_b1= 5e-6; % beam 1 thickness
+t_b2= 5e-6; % beam 2 thickness
+w_b1= 2e-6; % beam 1 width
+w_b2= 2e-6; % beam 2 width
+l_b1= 125e-6; % beam 1 length 
+l_b2= 125e-6; % beam 2 length
 
 % comb geometry
 l_pc=50e-6; % comb finger overlap
 
+% outer frame geometry
+outer_Lx=200e-6
+outer_Ly=200e-6
+outer_thick=t_b1;
+outer_width=40e-6;
+
+% innter frame geometry
+inner_Lx=outer_Lx-2*outer_width-2*4*2*w_b1;   %100e-6
+inner_Ly=0.9*(outer_Ly-2*outer_width-2*4*2*w_b2);   %100e-6 % the 0.9 is a safty factor for space
+inner_thick=tb_1;
+inner_width=10e-6;
+inner_centerbeam_width=20e-6;
+
 
 %% parameters
-
-% M_m= ; % mass of inner and outer frames
-% M_b= ; % suspension beam mass
-  M_c= ; % drive and sense combs mass
-  M_e= 0; % etch holes mass
-% M=M_m+M_b+M_c-M_e; % total mass
-M=4e-9; % mass in kg
+   M_outerframe=2*outer_width*outer_Ly+2*outer_width*(outer_Lx-2*outer_width);
+   M_innerframe=2*inner_width*inner_Ly+2*inner_width*(inner_Lx-2*inner_width)+(inner_Ly-2*inner_width)*inner_centerbeam_width;
+   
+   M_m = M_outerframe+M_innerframe; % mass of inner and outer frames
+   M_b = ((4*4*t_b1*w_b1*l_b1)+(4*4*t_b2*w_b2*l_b2))*density; % suspension beam mass
+%  M_c = ; % drive and sense combs mass
+   M_e = 0; % etch holes mass
+   M = M_m+M_b+M_c-M_e; % total mass
+%M=4e-9; % mass in kg
 
 
 %% stiffness coefficients
-% Kx=((4*E*t_b1*w_b1^3)/l_b1^3)+((4*E*t_b2*w_b2^3)/l_b2^3);
-% Ky=((4*E*t_b1*w_b1^3)/l_b1^3)+((4*E*t_b2*w_b2^3)/l_b2^3);
-Kx=30.95; % N/m
-Ky=30.95; % N/m
+Kx=((4*E*t_b1*w_b1^3)/l_b1^3)+((4*E*t_b2*w_b2^3)/l_b2^3)
+Ky=((4*E*t_b1*w_b1^3)/l_b1^3)+((4*E*t_b2*w_b2^3)/l_b2^3)
+%Kx=30.95; % N/m
+%Ky=30.95; % N/m
 
 %% mode frequencies
 % drive mode frequency
