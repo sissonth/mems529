@@ -1,6 +1,9 @@
 %% true parameters
 % DYNAMCIS
-omega= 60*(pi/180); % angular velocity % UNITS?
+%omega= 60*(pi/180); % angular velocity % UNITS?
+omega=-5.2:0.01:5.2; % roughly -50 RPM to 50 RPM
+V_dc= 15; %DC voltage
+V_ac= 10; %AC voltage
 
 % MATERIAL
 E= 160e9; % youngs modulus of poly-silicon
@@ -54,6 +57,9 @@ Lc=1.9870e-06; %characterstic length
 P=101325; % 1 atm ** LIKELY TO CHANGE ***
 T=298; % temerature
 
+% permitivity of vacuum/air
+perm= 8.85e-12;
+
 %% parameters
    M_outerframe=(2*outer_width*outer_Ly+2*outer_width*(outer_Lx-2*outer_width))*outer_thick*density;
    M_innerframe=(2*inner_width*inner_Ly+2*inner_width*(inner_Lx-2*inner_width)+(inner_Ly-2*inner_width)*inner_centerbeam_width)*inner_thick*density;
@@ -80,9 +86,9 @@ Ky=((4*E*t_b1*w_b1^3)/l_b1^3)+((4*E*t_b2*w_b2^3)/l_b2^3)
 
 %% mode frequencies
 % drive mode frequency
-fx=(1/(2*pi))*sqrt(Kx/M)
+fx=(1/(2*pi))*sqrt(Kx/M);
 % sense mode frequency
-fy=(1/(2*pi))*sqrt(Ky/M)
+fy=(1/(2*pi))*sqrt(Ky/M);
 
 %% knudsen number (Kn)
 
@@ -121,20 +127,16 @@ C_drive=C_proof_drive+C_comb_drive; % damping
 C_sense=C_proof_sense+C_comb_sense; % damping
 
 %% electrostatic force from comb drive
-perm= 8.85e-12; %permitivity of air (vacuum, really). 
-V_dc= 15; %DC voltage
-V_ac= 10; %AC voltage
+%note that the 2*N is for the number of capcitors formed.
+Fd=(2.28*2*N_drive*perm*thickness_drive*V_dc*V_ac)/gap_drive;
 
-Fd=(2.28*N*perm*t_c*V_dc*V_ac)/g_c;
-%%
-Fd/2.28/t_c*g_c/perm/500/15
 %% some maths via first order approximation methods
 
 % drive static displacement
 Xstatic=Fd/Kx;
 
 % drive quality factor
-Qdrive=sqrt(Kx*M/C_drive);
+Qdrive=sqrt(Kx*M)/C_drive;
 
 % drive displacement
 Xdrive=Xstatic*Qdrive;
@@ -147,16 +149,12 @@ Fc=2*M*omega*Vdrive;
 
 %% some other maths
 Ystatic=Fc/Ky;
-Qsense=sqrt(Ky*M/C_sense); 
+Qsense=sqrt(Ky*M)/C_sense; 
 Ysense=Ystatic*Qsense; % sense displacement
 
 %% change in capacitance
-% constants
-perm= 8.85e-12; % permittivity of vacuum (air is close enough). 
 % change in capacitance
-dCap=(perm*l_pc*t_c*Ysense)/(g_c^2)
-
-
+dCap=(perm*overlap_sense*thickness_sense*Ysense)/(gap_sense^2)
 
 
 %% guessing some numbers and calculating dCap
