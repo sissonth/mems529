@@ -156,26 +156,24 @@ Ysense=Ystatic*Qsense; % sense displacement
 % change in capacitance
 dCap=(perm*overlap_sense*thickness_sense*Ysense)/(gap_sense^2)
 
+%% ac voltage reading
+Vdc_sense=5;
+current=Vdc_sense*dCap/fy;
 
-%% guessing some numbers and calculating dCap
-% Ysense=6.75e-9; % meters
-% t_c= 5e-6; % comb finger thickness
-% perm= 8.85e-12; % permittivity of air
-% l_pc= 50e-6; % comb finger overlap
-% g_c= 2e-6; % gap between comb finger
-% 
-% dCap=(perm*l_pc*t_c*Ysense)/(g_c^2)
+% ASIC Voltage Output
+Cref=0.15e-12; % reference capacitance
+Vout=dCap/Cref;
 
 
+%% plotting
+
+figure
+plot(omega*180/pi,Vout*1000)
+grid on
+ylabel('Output Voltage (mV)');
+xlabel('Angular Velocity (deg/sec)')
 
 
-
-
-
-
-
-%%%% NOTES
-% 1) N ~= N
 
 
 
