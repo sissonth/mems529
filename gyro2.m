@@ -1,9 +1,11 @@
 %% true parameters
 % DYNAMCIS
 %omega= 60*(pi/180); % angular velocity % UNITS?
-omega=-5.2:0.01:5.2; % roughly -50 RPM to 50 RPM
-V_dc= 15; %DC voltage
-V_ac= 10; %AC voltage
+%omega=-5.2:0.01:5.2; % roughly -50 RPM to 50 RPM
+
+omega=10*(pi/180)
+V_dc= 5; %DC voltage
+V_ac= 7; %AC voltage
 
 % MATERIAL
 E= 160e9; % youngs modulus of poly-silicon
@@ -11,50 +13,52 @@ density = 2329; %kg/m3
 
 % GEOMETRY
 % spring geometry 
-t_b1= 5e-6; % beam 1 thickness
-t_b2= 5e-6; % beam 2 thickness
+t_b1= 30e-6; % beam 1 thickness
+t_b2= 30e-6; % beam 2 thickness
 w_b1= 2e-6; % beam 1 width
 w_b2= 2e-6; % beam 2 width
 l_b1= 125e-6; % beam 1 length 
 l_b2= 125e-6; % beam 2 length
 
 % outer frame geometry
-outer_Lx=200e-6
-outer_Ly=200e-6
+outer_Lx=300e-6
+outer_Ly=300e-6
 outer_thick=t_b1;
-outer_width=40e-6;
+outer_width=100e-6;
 
 % innter frame geometry
 inner_Lx=outer_Lx-2*outer_width-2*4*2*w_b1;   %100e-6
 inner_Ly=0.9*(outer_Ly-2*outer_width-2*4*2*w_b2);   %100e-6 % the 0.9 is a safty factor for space
 inner_thick=t_b1;
-inner_width=10e-6;
+inner_width=30e-6;
 inner_centerbeam_width=20e-6;
 
 % comb geometry
 % drive combs
-N_drive = 100; % number of drive combs
-length_drive=10e-6; % length of drive combs
+N_drive = 200; % number of drive combs
+length_drive=5e-6; % length of drive combs
 width_drive=2e-6; % width of drive combs
 thickness_drive = t_b1; % finger thickness
 gap_drive = 2e-6;  % gap between comb fingers
 
 
 % sense combs
-N_sense = 100; % number of drive combs
+N_sense = 15; % number of drive combs
 length_sense=30e-6; %length of sense combs
-width_sense=2e-6; %length of sense combs
+width_sense=3e-6; %length of sense combs
 thickness_sense = t_b1; % finger thickness
 overlap_sense = 50e-6; % comb finger overlap
 gap_sense = 2e-6;  % gap between comb fingers
 
-h=5e-6; % gap between proof mass and subsrate 
+h=20e-6; % gap between proof mass and subsrate 
 
 % characteristic length
-Lc=1.9870e-06; %characterstic length
+%Lc=1.9870e-06; %characterstic length
+Lc=2e-6;
 
 % pressure & temp.
-P=101325; % 1 atm ** LIKELY TO CHANGE ***
+%P=101325; % 1 atm ** LIKELY TO CHANGE ***
+P=1000;
 T=298; % temerature
 
 % permitivity of vacuum/air
@@ -157,25 +161,28 @@ Ysense=Ystatic*Qsense; % sense displacement
 dCap=(perm*overlap_sense*thickness_sense*Ysense)/(gap_sense^2)
 
 %% ac voltage reading
-Vdc_sense=5;
-current=Vdc_sense*dCap/fy;
+%Vdc_sense=5;
+%current=Vdc_sense*dCap/fy;
 
 % ASIC Voltage Output
 Cref=0.15e-12; % reference capacitance
-Vout=dCap/Cref;
+Vout=dCap/Cref
 
 
 %% plotting
 
-figure
-plot(omega*180/pi,Vout*1000)
-grid on
-ylabel('Output Voltage (mV)');
-xlabel('Angular Velocity (deg/sec)')
+% figure
+% plot(omega*180/pi,Vout*1000)
+% grid on
+% ylabel('Output Voltage (mV)');
+% xlabel('Angular Velocity (deg/sec)')
 
+omega*180/pi
+Vout*1000
 
-
-
+%%%%% NOTES
+% CAN ADD TEMPERATURE PLOT WITH YOUNGS MODULUS EQUATION CHANGE
+% CAN DO PLOT OF QUALITY FACTOR
 
 
 
